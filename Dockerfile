@@ -16,4 +16,6 @@ WORKDIR /
 COPY --from=build /github.com/Hudayberdyyev/image-service/file_storage .
 COPY --from=build /github.com/Hudayberdyyev/image-service/configs configs/
 
+EXPOSE 6670
+
 CMD ["./file_storage"]

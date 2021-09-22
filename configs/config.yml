@@ -1,10 +1,10 @@
 server:  
-  ip: "192.168.1.113"
-  port: "7770"
+  ip: "144.91.104.118"
+  port: "6670"
   protocol: "http"
-  
+
 storage:
-  host: "localhost"
+  host: "news-storage-2"
   port: "9000"
   username: "admin"
   password: "1jan@%!)(^"
