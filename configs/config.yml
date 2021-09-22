@@ -1,0 +1,6 @@
+storage:
+  host: "localhost"
+  port: "9000"
+  username: "admin"
+  password: "1jan@%!)(^"
+  sslmode: false
