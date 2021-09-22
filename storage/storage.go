@@ -2,15 +2,21 @@ package storage
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 
-	"github.com/Hudayberdyyev/image_service/logo"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/sirupsen/logrus"
+)
+
+const (
+	NewsBucket    = "news"
+	ContentBucket = "content"
+	LogoBucket    = "logo"
+	LogoFolder    = "logo"
 )
 
 type Config struct {
@@ -51,34 +57,20 @@ func (s *Storage) MakeBucket(ctx context.Context, bucketName string) error {
 	return nil
 }
 
-func (s *Storage) UploadImage(ctx context.Context, bucketName string, filePath string, objectName string, authorsId int) error {
-	// imageReader, err := getImageReader(filePath)
-
-	var path string
-	switch authorsId {
-	case 1:
-		path = logo.Turkmenportal
-	case 2:
-		path = logo.Rozetked
-	case 3:
-		path = logo.Wylsa
-	case 4:
-		path = logo.Championat
-	case 5:
-		path = logo.Ixbt
+func (s *Storage) UploadAuthorsLogo(ctx context.Context, bucketName string) error {
+	for i := 1; i <= 5; i++ {
+		filename := strconv.Itoa(i) + ".jpg"
+		path := LogoFolder + "/" + filename
+		imageReader, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		_, err = s.Client.PutObject(ctx, bucketName, filename, imageReader, -1, minio.PutObjectOptions{ContentType: "application/octet-stream"})
+		if err != nil {
+			return err
+		}
+		logrus.Printf("Successfully upload authors logo")
 	}
-
-	imageReader, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-
-	_, err = s.Client.PutObject(ctx, bucketName, objectName, imageReader, -1, minio.PutObjectOptions{ContentType: "application/octet-stream"})
-	if err != nil {
-		return err
-	}
-	fmt.Printf("Successfully uploaded bytes: %s\n", filePath)
-
 	return nil
 }
 
