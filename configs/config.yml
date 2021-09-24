@@ -4,8 +4,8 @@ server:
   protocol: "http"
 
 storage:
-  host: "news-storage-2"
-  port: "9000"
+  host: "news-storage"
+  port: "9070"
   username: "admin"
   password: "1jan@%!)(^"
   sslmode: false
